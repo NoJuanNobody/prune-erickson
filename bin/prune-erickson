@@ -42,7 +42,7 @@ if ARGV.length == 1 and ARGV[0] == "help"
 elsif ARGV.length == 1 and (ARGV[0] == "-v" or ARGV[0] == "-version" or ARGV[0] == "version")
 	print "\n
 				-------------------
-				| VERSION | 0.0.3 |
+				| VERSION | 0.0.4 |
 				-------------------
 "
 print "
@@ -138,12 +138,12 @@ elsif ARGV.length == 1 and ARGV[0] != "version" or ARGV[0] != "help" or ARGV[0] 
 					}
 				end
 				print "~~>writing new file \n\n"
-				# print newvar
+			
 				newvar.map! { |x| 
 
 					if x == "OppCommunity"
 						print "renaming field #{x} \n".colorize(:light_blue)
-						x = "Community"
+						x = "Community of Interest"
 					elsif x == "FirstName"
 						print "renaming field #{x} \n".colorize(:light_blue)
 						x = "First Name"	
@@ -152,19 +152,22 @@ elsif ARGV.length == 1 and ARGV[0] != "version" or ARGV[0] != "help" or ARGV[0] 
 						x = "Last Name"
 					elsif x == "Address"
 						print "renaming field #{x} \n".colorize(:light_blue)
-						x = "Address"
+						x = "Address 1"
 					elsif x == "city"
 						print "renaming field #{x} \n".colorize(:light_blue)
 						x = "city"
 					elsif x == "State"
 						print "renaming field #{x} \n".colorize(:light_blue)
-						x = "State"
+						x = "State or Province"
 					elsif x == "Zipcode"
 						print "renaming field #{x} \n".colorize(:light_blue)
-						x = "Zipcode"
+						x = "Zip or Postal Code"
 					elsif x == "Email"
 						print "renaming field #{x} \n".colorize(:light_blue)
-						x = "Email"
+						x = "Email Address"
+					elsif x == "Phone"
+						print "renaming field #{x} \n".colorize(:light_blue)
+						x = "Home Phone"
 					else
 						x=x
 					end
@@ -175,6 +178,11 @@ elsif ARGV.length == 1 and ARGV[0] != "version" or ARGV[0] != "help" or ARGV[0] 
 							
 					
 							newSheet.row(i).push newvar[(i*testvar.length)+j]
+					end
+					if i > 0
+						newSheet.row(i).push "IL"
+					else
+						newSheet.row(i).push "ILorCC"
 					end
 				end
 				print "output file is in same file under out.xls to open, use \n \n open #{output}"
