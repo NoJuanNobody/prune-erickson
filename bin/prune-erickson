@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 
 require 'spreadsheet'
+require "csv"
 require 'colorize'
 
 # --------------------------------------------
@@ -35,14 +36,18 @@ if ARGV.length == 1 and ARGV[0] == "help"
 	     \    `.  /
 	      |      |
 	      |      | \n\n\n".colorize(:light_blue)
-	print "to edit a file use this format:
+	puts "to edit a file use this format:"
+	puts "FOR .xls \n".yellow
 
-	prune-erickson [filename.xls (string)] [sheet-number (number)] [output.xls (string)]\n\n\n\n
-	"
+	puts "prune-erickson [filename.xls (string)] [sheet-number (number)] [output.xls (string)]\n\n\n"
+	puts "FOR .csv \n".yellow
+	puts "prune-erickson [filename.csv (string)] [output.xls (string)]\n\n\n"
+	puts "Make sure to cd into your correct directory where the file is located.
+	the output file will be in the same directory \n\n\n".yellow
 elsif ARGV.length == 1 and (ARGV[0] == "-v" or ARGV[0] == "-version" or ARGV[0] == "version")
 	print "\n
 				-------------------
-				| VERSION | 0.0.4 |
+				| VERSION | 0.1.0 |
 				-------------------
 "
 print "
@@ -60,7 +65,7 @@ elsif ARGV.length == 1 and ARGV[0] != "version" or ARGV[0] != "help" or ARGV[0] 
 	#  \s\S\s to pick up the index number
 	# I should also check that book is not nil
 	if ARGV[0] =~ /\S+[.xls*]/ and ARGV[1] =~ /\d/ and ARGV[2] =~ /\S+[.xls*]/
-	# --------------------------------------------
+		# --------------------------------------------
 		Spreadsheet.client_encoding = 'UTF-8'
 		print "~>reading file you have requested"
 		print "\n"
@@ -189,6 +194,132 @@ elsif ARGV.length == 1 and ARGV[0] != "version" or ARGV[0] != "help" or ARGV[0] 
 				print "\n"
 				newBook.write output
 			end
+		else
+			print "\n\n
+			WHOOPS!!!
+
+			It looks like this file is in the wrong folder or does not exsist. 
+			try locating the folder and inputing the correct path\n\n".red
+		end	
+	elsif ARGV[0] =~ /\S+[.csv*]/ and ARGV[1] =~ /\S+[.xls*]/
+		output = ARGV[1]
+		if File.exist?(fileName)
+			file_data = CSV.read(fileName)
+			newBook = Spreadsheet::Workbook.new
+			newSheet = newBook.create_worksheet
+
+			newSheet.name = "output"
+
+			testvar = Array.new
+		
+			print "~>looking for unnecessary information"
+			print "\n"
+
+			file_data[0].each_with_index{|val, index| 
+
+				unless val != "OppCommunity" and val !="FirstName" and val != "LastName" and val != "Address" and val!="City" and val != "State" and val != "Zipcode" and val != "Phone" and val != "Email" and val != "ILorCC"
+					testvar.push(index)
+				end
+			}
+
+			unless file_data[0].include? "OppCommunity"	
+				print "you are missing the OppCommunity field\n".yellow.blink
+			else
+
+			end
+			unless file_data[0].include? "FirstName"	
+				print "you are missing the FirstName field\n".yellow.blink
+			end
+			unless file_data[0].include? "LastName"	
+				print "you are missing the LastName field\n".yellow.blink
+			end
+			unless file_data[0].include? "Phone"	
+				print "you are missing the phone field\n".yellow.blink
+			end
+			unless file_data[0].include? "Address"	
+				print "you are missing the Address field\n".yellow.blink
+			end
+			unless file_data[0].include? "City"	
+				print "you are missing the City field\n".yellow.blink
+			end
+			unless file_data[0].include? "State"	
+				print "you are missing the State field\n".yellow.blink
+			end
+			unless file_data[0].include? "Zipcode"	
+				print "you are missing the Zipcode field\n".yellow.blink
+			end
+			unless file_data[0].include? "Address"	
+				print "you are missing the Address field\n".yellow.blink
+			end
+			unless file_data[0].include? "Address"	
+				print "you are missing the Address field\n".yellow.blink
+			end
+			unless file_data[0].include? "Email"	
+				print "you are missing the Email field\n".yellow.blink
+			end
+			# puts testvar
+			newvar = Array.new
+			newvar.push "zero"
+			file_data.each do |row|
+				row.each_with_index {|val, index| 
+					if testvar.include? index
+						
+						newvar.push val
+					end
+				}
+			end
+			print "~~>writing new file \n\n"
+		
+			newvar.map! { |x| 
+
+				if x == "OppCommunity"
+					print "renaming field #{x} \n".colorize(:light_blue)
+					x = "Community of Interest"
+				elsif x == "FirstName"
+					print "renaming field #{x} \n".colorize(:light_blue)
+					x = "First Name"	
+				elsif x == "LastName"
+					print "renaming field #{x} \n".colorize(:light_blue)
+					x = "Last Name"
+				elsif x == "Address"
+					print "renaming field #{x} \n".colorize(:light_blue)
+					x = "Address 1"
+				elsif x == "city"
+					print "renaming field #{x} \n".colorize(:light_blue)
+					x = "city"
+				elsif x == "State"
+					print "renaming field #{x} \n".colorize(:light_blue)
+					x = "State or Province"
+				elsif x == "Zipcode"
+					print "renaming field #{x} \n".colorize(:light_blue)
+					x = "Zip or Postal Code"
+				elsif x == "Email"
+					print "renaming field #{x} \n".colorize(:light_blue)
+					x = "Email Address"
+				elsif x == "Phone"
+					print "renaming field #{x} \n".colorize(:light_blue)
+					x = "Home Phone"
+				else
+					x=x
+				end
+			}
+			# print newvar
+			for i in 0..newvar.length
+				for j in 1..testvar.length
+						
+				
+						newSheet.row(i).push newvar[(i*testvar.length)+j]
+				end
+				if i > 0
+					newSheet.row(i).push "IL"
+				else
+					newSheet.row(i).push "ILorCC"
+				end
+			end
+			print "output file is in same file under out.xls to open, use \n \n open #{output}"
+			print "\n"
+			newBook.write output
+		
 		else
 			print "\n\n
 			WHOOPS!!!
