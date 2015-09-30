@@ -3,6 +3,8 @@
 require 'spreadsheet'
 require "csv"
 require 'colorize'
+# require 'fileUtils'
+
 
 # --------------------------------------------
 # GRABS INFORMATION FROM COMMAND LINE AND MAKES DATA AVAILABLE FOR PROGRAM
@@ -59,6 +61,16 @@ print "
 		Stay tuned for the official release 1.0.0 which could be any
 		day now.
 	".yellow
+elsif fileName =~ /\S+(.xlsx)/
+	puts "the xlsx format is not currently supported with prune-erickson".red.blink
+	puts "you can avoid this issue by converting to .xls \n\n"
+	puts "				to convert to xls \n".underline
+	puts "		mv #{File.basename(fileName,'.*')}.xlsx #{File.basename(fileName,'.*')}.xls ".yellow
+	puts "		open #{File.basename(fileName,'.*')}.xls \n".yellow
+
+	puts "		feel free to copy paste the commands above"
+	puts "		after these commands are completed AND YOU HAVE SAVED THE OPEN EXCEL DOCUMENT, you can call: \n"
+	puts "		prune-erickson #{File.basename(fileName,'.*')}.xls #{ARGV[1]} #{ARGV[2]}".yellow
 elsif ARGV.length == 1 and ARGV[0] != "version" or ARGV[0] != "help" or ARGV[0] != '-version' or ARGV[0] != "-v"  
 	# if ~~~> catch different files and options before running code to check for errors.
 	# \S+[.xls*] this is a regex for the xls input and output files
@@ -71,7 +83,7 @@ elsif ARGV.length == 1 and ARGV[0] != "version" or ARGV[0] != "help" or ARGV[0] 
 		print "\n"
 		# reads file
 
-		if File.exist?(fileName)
+		if File.exist?(fileName.to_s)
 			book = Spreadsheet.open fileName
 			sheet1 = book.worksheet sheetNum
 			newBook = Spreadsheet::Workbook.new
