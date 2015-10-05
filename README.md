@@ -37,6 +37,13 @@ will give you the version of the utility
 
 this is the processing command, you must provide an input file which can be in the .xls, .xlsx, and .csv formats. the second argument is the sheet number, or the sheet where you need to remove data from your excel sheet. the last argument is the output file which only outputs files in the .xls format. 
 
+###handling CSV files ###
+
+the format of the processing command is a little different 
+
+```$prune-erickson input-file.csv output.xls```
+
+because a CSV filed does not have sheets, there is no need to provide a sheet number
 
 ### Who do I talk to? ###
 
