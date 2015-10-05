@@ -43,7 +43,7 @@ the format of the processing command is a little different
 
 ```$prune-erickson input-file.csv output.xls```
 
-because a CSV filed does not have sheets, there is no need to provide a sheet number
+because a CSV file does not have separate worksheets, there is no need to provide a sheet number
 
 ### Who do I talk to? ###
 
