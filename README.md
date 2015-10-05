@@ -42,4 +42,4 @@ this is the processing command, you must provide an input file which can be in t
 ### Who do I talk to? ###
 
 * adlondono owns this repo and wrote this program
-*feel free to make a pull request
+* feel free to make a pull request
