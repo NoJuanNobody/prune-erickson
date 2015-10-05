@@ -2,9 +2,6 @@
 
 Below is documentation related to the Prune-Erickson Command line utility, an executable script that removes erroneous and sensitive data from excel files stored on your local computer. 
 
-### What is this repository for? ###
-
-* Quick summary
 This repository is for the development files related to the utility. the readME is documentation for use of the app. The current version is 0.2.0 which is still under active development. 
 
 Prune-erickson is a command line utility that has a very specific use for Erickson Living Employees only. 
