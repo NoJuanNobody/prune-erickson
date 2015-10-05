@@ -1,4 +1,4 @@
-# README #
+# Prune-erickson Command Line Utility #
 
 Below is documentation related to the Prune-Erickson Command line utility, an executable script that removes erroneous and sensitive data from excel files stored on your local computer. 
 
