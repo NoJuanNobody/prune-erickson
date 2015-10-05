@@ -16,12 +16,14 @@ Prune-erickson works by parsing excel file data, then copying necessary data fro
 Requirements: for proper installation, it is important to be running on a MAC OSX system with the latest ruby release installed ```2.2.0```
 
 you can begin by installing the app using the gem command on the command line
+
 ```$ gem install prune-erickson```
+
 this will install the latest and most stable version, along with its dependencies. 
 
 the general pattern of using this utility is to call the name of the utility and the arguments
 
-```$prune-erickson [args]'''
+```$prune-erickson [args]```
 
 ###helpful commands###
 
