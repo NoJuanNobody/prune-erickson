@@ -61,19 +61,19 @@ print "
 		Stay tuned for the official release 1.0.0 which could be any
 		day now.
 	".yellow
-
+# --------------------------------------------
+# if the user input has to do with the help or version options this code is run
 elsif ARGV.length == 1 and ARGV[0] != "version" or ARGV[0] != "help" or ARGV[0] != '-version' or ARGV[0] != "-v"  
-	# if ~~~> catch different files and options before running code to check for errors.
-	# \S+[.xls*] this is a regex for the xls input and output files
-	#  \s\S\s to pick up the index number
-	# I should also check that book is not nil
+	# line 68 catches any user input that relates to .xls files in the form of 
+	# prune-erickson yourfile.xls [digit] outputfile.xls
 	if ARGV[0] =~ /\S+.xls\b/ and ARGV[1] =~ /\d/ and ARGV[2] =~ /\S+.xls\b/
-		# --------------------------------------------
+		
 		Spreadsheet.client_encoding = 'UTF-8'
 		print "~>reading file you have requested"
 		print "\n"
+		# --------------------------------------------
 		# reads file
-
+		#checking if the file is not nil and then creating a new workbook to copy necessary info into.
 		if File.exist?(fileName.to_s)
 			book = Spreadsheet.open fileName
 			sheet1 = book.worksheet sheetNum
@@ -92,110 +92,10 @@ elsif ARGV.length == 1 and ARGV[0] != "version" or ARGV[0] != "help" or ARGV[0] 
 				this sheet seems to be empty...
 				are you selecting the wrong one? \n".red
 			else
-				sheet1.row(0).each_with_index{|val, index| 
-
-					unless val != "OppCommunity" and val !="FirstName" and val != "LastName" and val != "Address" and val!="City" and val != "State" and val != "Zipcode" and val != "Phone" and val != "Email" and val != "ILorCC"
-						testvar.push(index)
-					end
-				}
-
-				unless sheet1.row(0).include? "OppCommunity"	
-					print "you are missing the OppCommunity field\n".yellow.blink
-				else
-
-				end
-				unless sheet1.row(0).include? "FirstName"	
-					print "you are missing the FirstName field\n".yellow.blink
-				end
-				unless sheet1.row(0).include? "LastName"	
-					print "you are missing the LastName field\n".yellow.blink
-				end
-				unless sheet1.row(0).include? "Phone"	
-					print "you are missing the phone field\n".yellow.blink
-				end
-				unless sheet1.row(0).include? "Address"	
-					print "you are missing the Address field\n".yellow.blink
-				end
-				unless sheet1.row(0).include? "City"	
-					print "you are missing the City field\n".yellow.blink
-				end
-				unless sheet1.row(0).include? "State"	
-					print "you are missing the State field\n".yellow.blink
-				end
-				unless sheet1.row(0).include? "Zipcode"	
-					print "you are missing the Zipcode field\n".yellow.blink
-				end
-				unless sheet1.row(0).include? "Address"	
-					print "you are missing the Address field\n".yellow.blink
-				end
-				unless sheet1.row(0).include? "Address"	
-					print "you are missing the Address field\n".yellow.blink
-				end
-				unless sheet1.row(0).include? "Email"	
-					print "you are missing the Email field\n".yellow.blink
-				end
-				# puts testvar
-				newvar = Array.new
-				newvar.push "zero"
-				sheet1.each do |row|
-					row.each_with_index {|val, index| 
-						if testvar.include? index
-							
-							newvar.push val
-						end
-					}
-				end
-				print "~~>writing new file \n\n"
-			
-				newvar.map! { |x| 
-
-					if x == "OppCommunity"
-						print "renaming field #{x} \n".colorize(:light_blue)
-						x = "Community of Interest"
-					elsif x == "FirstName"
-						print "renaming field #{x} \n".colorize(:light_blue)
-						x = "First Name"	
-					elsif x == "LastName"
-						print "renaming field #{x} \n".colorize(:light_blue)
-						x = "Last Name"
-					elsif x == "Address"
-						print "renaming field #{x} \n".colorize(:light_blue)
-						x = "Address 1"
-					elsif x == "city"
-						print "renaming field #{x} \n".colorize(:light_blue)
-						x = "city"
-					elsif x == "State"
-						print "renaming field #{x} \n".colorize(:light_blue)
-						x = "State or Province"
-					elsif x == "Zipcode"
-						print "renaming field #{x} \n".colorize(:light_blue)
-						x = "Zip or Postal Code"
-					elsif x == "Email"
-						print "renaming field #{x} \n".colorize(:light_blue)
-						x = "Email Address"
-					elsif x == "Phone"
-						print "renaming field #{x} \n".colorize(:light_blue)
-						x = "Home Phone"
-					else
-						x=x
-					end
-				}
-				# print newvar
-				for i in 0..newvar.length
-					for j in 1..testvar.length
-							
-					
-							newSheet.row(i).push newvar[(i*testvar.length)+j]
-					end
-					if i > 0
-						newSheet.row(i).push "IL"
-					else
-						newSheet.row(i).push "ILorCC"
-					end
-				end
-				print "output file is in same file under out.xls to open, use \n \n open #{output}"
-				print "\n"
-				newBook.write output
+				labelChecker(sheet1.row(0), testvar)
+				fieldChecker(sheet1.row(0))
+				processData(sheet1, newvar, testvar)
+				printFile(newvar, testvar, newSheet)
 			end
 		else
 			print "\n\n
@@ -218,111 +118,10 @@ elsif ARGV.length == 1 and ARGV[0] != "version" or ARGV[0] != "help" or ARGV[0] 
 			print "~>looking for unnecessary information"
 			print "\n"
 
-			file_data[0].each_with_index{|val, index| 
-
-				unless val != "OppCommunity" and val !="FirstName" and val != "LastName" and val != "Address" and val!="City" and val != "State" and val != "Zipcode" and val != "Phone" and val != "Email" and val != "ILorCC"
-					testvar.push(index)
-				end
-			}
-
-			unless file_data[0].include? "OppCommunity"	
-				print "you are missing the OppCommunity field\n".yellow.blink
-			else
-
-			end
-			unless file_data[0].include? "FirstName"	
-				print "you are missing the FirstName field\n".yellow.blink
-			end
-			unless file_data[0].include? "LastName"	
-				print "you are missing the LastName field\n".yellow.blink
-			end
-			unless file_data[0].include? "Phone"	
-				print "you are missing the phone field\n".yellow.blink
-			end
-			unless file_data[0].include? "Address"	
-				print "you are missing the Address field\n".yellow.blink
-			end
-			unless file_data[0].include? "City"	
-				print "you are missing the City field\n".yellow.blink
-			end
-			unless file_data[0].include? "State"	
-				print "you are missing the State field\n".yellow.blink
-			end
-			unless file_data[0].include? "Zipcode"	
-				print "you are missing the Zipcode field\n".yellow.blink
-			end
-			unless file_data[0].include? "Address"	
-				print "you are missing the Address field\n".yellow.blink
-			end
-			unless file_data[0].include? "Address"	
-				print "you are missing the Address field\n".yellow.blink
-			end
-			unless file_data[0].include? "Email"	
-				print "you are missing the Email field\n".yellow.blink
-			end
-			# puts testvar
-			newvar = Array.new
-			newvar.push "zero"
-			file_data.each do |row|
-				row.each_with_index {|val, index| 
-					if testvar.include? index
-						
-						newvar.push val
-					end
-				}
-			end
-			print "~~>writing new file \n\n"
-		
-			newvar.map! { |x| 
-
-				if x == "OppCommunity"
-					print "renaming field #{x} \n".colorize(:light_blue)
-					x = "Community of Interest"
-				elsif x == "FirstName"
-					print "renaming field #{x} \n".colorize(:light_blue)
-					x = "First Name"	
-				elsif x == "LastName"
-					print "renaming field #{x} \n".colorize(:light_blue)
-					x = "Last Name"
-				elsif x == "Address"
-					print "renaming field #{x} \n".colorize(:light_blue)
-					x = "Address 1"
-				elsif x == "city"
-					print "renaming field #{x} \n".colorize(:light_blue)
-					x = "city"
-				elsif x == "State"
-					print "renaming field #{x} \n".colorize(:light_blue)
-					x = "State or Province"
-				elsif x == "Zipcode"
-					print "renaming field #{x} \n".colorize(:light_blue)
-					x = "Zip or Postal Code"
-				elsif x == "Email"
-					print "renaming field #{x} \n".colorize(:light_blue)
-					x = "Email Address"
-				elsif x == "Phone"
-					print "renaming field #{x} \n".colorize(:light_blue)
-					x = "Home Phone"
-				else
-					x=x
-				end
-			}
-			# print newvar
-			for i in 0..newvar.length
-				for j in 1..testvar.length
-						
-				
-						newSheet.row(i).push newvar[(i*testvar.length)+j]
-				end
-				if i > 0
-					newSheet.row(i).push "IL"
-				else
-					newSheet.row(i).push "ILorCC"
-				end
-			end
-			print "output file is in same file under out.xls to open, use \n \n open #{output}"
-			print "\n"
-			newBook.write output
-		
+			labelChecker(file_data[0], testvar)
+			fieldChecker(file_data[0])
+			processData(file_data, newvar, testvar)
+			printFile(newvar, testvar, newSheet)
 		else
 			print "\n\n
 			WHOOPS!!!
@@ -343,7 +142,8 @@ elsif ARGV.length == 1 and ARGV[0] != "version" or ARGV[0] != "help" or ARGV[0] 
 			xlsx = Roo::Spreadsheet.open(fileName)
 			newBook = Spreadsheet::Workbook.new
 			newSheet = newBook.create_worksheet
-			if xlsx.sheet(sheetNum) == nil
+			xlsxSheet = xlsx.sheet(sheetNum)
+			if xlsxSheet == nil
 				print "\n
 				(_(T__T)_/ \n\n
 				this sheet seems to be empty...
@@ -353,111 +153,11 @@ elsif ARGV.length == 1 and ARGV[0] != "version" or ARGV[0] != "help" or ARGV[0] 
 				header = xlsx.sheet(sheetNum).row(1)
 				# take first row, and loop through the items in the array
 				# sort indexes that are not necessary in the array
-				testvar = Array.new
-				header.each_with_index{|val, index| 
-					unless val != "OppCommunity" and val !="FirstName" and val != "LastName" and val != "Address" and val!="City" and val != "State" and val != "Zipcode" and val != "Phone" and val != "Email" and val != "ILorCC"
-						testvar.push(index)
-					end
-				}
-
-				# check for missing necessary information
-				unless header.include? "OppCommunity"	
-					print "you are missing the OppCommunity field\n".yellow.blink
-				else
-
-				end
-				unless header.include? "FirstName"	
-					print "you are missing the FirstName field\n".yellow.blink
-				end
-				unless header.include? "LastName"	
-					print "you are missing the LastName field\n".yellow.blink
-				end
-				unless header.include? "Phone"	
-					print "you are missing the phone field\n".yellow.blink
-				end
-				unless header.include? "Address"	
-					print "you are missing the Address field\n".yellow.blink
-				end
-				unless header.include? "City"	
-					print "you are missing the City field\n".yellow.blink
-				end
-				unless header.include? "State"	
-					print "you are missing the State field\n".yellow.blink
-				end
-				unless header.include? "Zipcode"	
-					print "you are missing the Zipcode field\n".yellow.blink
-				end
-				unless header.include? "Address"	
-					print "you are missing the Address field\n".yellow.blink
-				end
-				unless header.include? "Address"	
-					print "you are missing the Address field\n".yellow.blink
-				end
-				unless header.include? "Email"	
-					print "you are missing the Email field\n".yellow.blink
-				end
-
-				# puts testvar
-				newvar = Array.new
-				newvar.push "zero"
-				xlsx.sheet(sheetNum).each do |row|
-					row.each_with_index {|val, index| 
-						if testvar.include? index
-							
-							newvar.push val
-						end
-					}
-				end
-				print "~~>writing new file \n\n"
-
-				newvar.map! { |x| 
-
-					if x == "OppCommunity"
-						print "renaming field #{x} \n".colorize(:light_blue)
-						x = "Community of Interest"
-					elsif x == "FirstName"
-						print "renaming field #{x} \n".colorize(:light_blue)
-						x = "First Name"	
-					elsif x == "LastName"
-						print "renaming field #{x} \n".colorize(:light_blue)
-						x = "Last Name"
-					elsif x == "Address"
-						print "renaming field #{x} \n".colorize(:light_blue)
-						x = "Address 1"
-					elsif x == "city"
-						print "renaming field #{x} \n".colorize(:light_blue)
-						x = "city"
-					elsif x == "State"
-						print "renaming field #{x} \n".colorize(:light_blue)
-						x = "State or Province"
-					elsif x == "Zipcode"
-						print "renaming field #{x} \n".colorize(:light_blue)
-						x = "Zip or Postal Code"
-					elsif x == "Email"
-						print "renaming field #{x} \n".colorize(:light_blue)
-						x = "Email Address"
-					elsif x == "Phone"
-						print "renaming field #{x} \n".colorize(:light_blue)
-						x = "Home Phone"
-					else
-						x=x
-					end
-				}
-				for i in 0..newvar.length
-					for j in 1..testvar.length
-							
-					
-							newSheet.row(i).push newvar[(i*testvar.length)+j]
-					end
-					if i > 0
-						newSheet.row(i).push "IL"
-					else
-						newSheet.row(i).push "ILorCC"
-					end
-				end
-				print "output file is in same file under out.xls to open, use \n \n open #{output}"
-				print "\n"
-				newBook.write output
+				testvar = Array.new				
+				labelChecker(header, testvar)
+				fieldChecker(header)
+				processData(xlsxSheet, newvar, testvar)
+				printFile(newvar, testvar, newSheet)
 			end
 		end
 	else
@@ -467,4 +167,120 @@ elsif ARGV.length == 1 and ARGV[0] != "version" or ARGV[0] != "help" or ARGV[0] 
 		prune-erickson help \n\n\n
 		"
 	end
+end
+# ------------------
+# FUNCTIONS
+# ------------------
+def labelChecker (row, testvar)
+
+	row.each_with_index{|val, index| 
+
+		unless val != "OppCommunity" and val !="FirstName" and val != "LastName" and val != "Address" and val!="City" and val != "State" and val != "Zipcode" and val != "Phone" and val != "Email" and val != "ILorCC"
+			testvar.push(index)
+		end
+	}
+end
+
+def fieldChecker (row)
+	unless row.include? "OppCommunity"	
+		print "you are missing the OppCommunity field\n".yellow.blink
+	else
+	end
+	unless row.include? "FirstName"	
+		print "you are missing the FirstName field\n".yellow.blink
+	end
+	unless row.include? "LastName"	
+		print "you are missing the LastName field\n".yellow.blink
+	end
+	unless row.include? "Phone"	
+		print "you are missing the phone field\n".yellow.blink
+	end
+	unless row.include? "Address"	
+		print "you are missing the Address field\n".yellow.blink
+	end
+	unless row.include? "City"	
+		print "you are missing the City field\n".yellow.blink
+	end
+	unless row.include? "State"	
+		print "you are missing the State field\n".yellow.blink
+	end
+	unless row.include? "Zipcode"	
+		print "you are missing the Zipcode field\n".yellow.blink
+	end
+	unless row.include? "Address"	
+		print "you are missing the Address field\n".yellow.blink
+	end
+	unless row.include? "Address"	
+		print "you are missing the Address field\n".yellow.blink
+	end
+	unless sheet1.row(0).include? "Email"	
+		print "you are missing the Email field\n".yellow.blink
+	end
+end
+
+def processData (sheet, newvar, testvar)
+	newvar = Array.new
+	newvar.push "zero"
+	sheet.each do |row|
+		row.each_with_index {|val, index| 
+			if testvar.include? index
+				
+				newvar.push val
+			end
+		}
+	end
+	print "~~>writing new file \n\n"
+	
+	newvar.map! { |x| 
+
+		if x == "OppCommunity"
+			print "renaming field #{x} \n".colorize(:light_blue)
+			x = "Community of Interest"
+		elsif x == "FirstName"
+			print "renaming field #{x} \n".colorize(:light_blue)
+			x = "First Name"	
+		elsif x == "LastName"
+			print "renaming field #{x} \n".colorize(:light_blue)
+			x = "Last Name"
+		elsif x == "Address"
+			print "renaming field #{x} \n".colorize(:light_blue)
+			x = "Address 1"
+		elsif x == "city"
+			print "renaming field #{x} \n".colorize(:light_blue)
+			x = "city"
+		elsif x == "State"
+			print "renaming field #{x} \n".colorize(:light_blue)
+			x = "State or Province"
+		elsif x == "Zipcode"
+			print "renaming field #{x} \n".colorize(:light_blue)
+			x = "Zip or Postal Code"
+		elsif x == "Email"
+			print "renaming field #{x} \n".colorize(:light_blue)
+			x = "Email Address"
+		elsif x == "Phone"
+			print "renaming field #{x} \n".colorize(:light_blue)
+			x = "Home Phone"
+		else
+			x=x
+		end
+	}
+end
+
+def printFile (newvar, testvar, newSheet)
+	# print newvar
+	for i in 0..newvar.length
+		for j in 1..testvar.length
+				
+		
+				newSheet.row(i).push newvar[(i*testvar.length)+j]
+		end
+		if i > 0
+			newSheet.row(i).push "IL"
+		else
+			newSheet.row(i).push "ILorCC"
+		end
+	end
+	print "output file is in same file under out.xls to open, use \n \n open #{output}"
+	print "\n"
+	newBook.write output
 end
