@@ -9,6 +9,9 @@ require 'colorize'
 # ------------------
 # FUNCTIONS
 # ------------------
+
+
+			
 def labelChecker (row, testvar)
 
 	row.each_with_index{|val, index| 
@@ -104,8 +107,9 @@ def processData (sheet, newvar, testvar)
 	}
 end
 
-def printFile (newvar, testvar, newSheet, newBook, output)
+def printFile (newvar, testvar, newSheet, newBook, output, il_or_cc)
 	# print newvar
+	puts il_or_cc
 	for i in 0..newvar.length
 		for j in 1..testvar.length
 				
@@ -113,7 +117,8 @@ def printFile (newvar, testvar, newSheet, newBook, output)
 				newSheet.row(i).push newvar[(i*testvar.length)+j]
 		end
 		if i > 0
-			newSheet.row(i).push "IL"
+			newSheet.row(i).push "#{il_or_cc}"
+
 		else
 			newSheet.row(i).push "ILorCC"
 		end
@@ -135,6 +140,17 @@ if sheetNum > 0
 	print sheetNum
 end	
 print "\n\n"
+puts "Is this an email campaign for Continuing Care? (CC) [y/n]".yellow
+
+res = STDIN.gets.strip
+puts res
+
+if res == 'y'
+	il_or_cc = 'CC'
+	puts il_or_cc
+else
+	il_or_cc = "IL"
+end
 # --------------------------------------------
 # ASKING FOR HELP
 if ARGV.length == 1 and ARGV[0] == "help"
@@ -198,7 +214,6 @@ elsif ARGV.length == 1 and ARGV[0] != "version" or ARGV[0] != "help" or ARGV[0] 
 			newSheet = newBook.create_worksheet
 
 			newSheet.name = "output"
-
 			testvar = Array.new
 			newvar = Array.new
 			print "~>looking for unnecessary information"
@@ -212,7 +227,7 @@ elsif ARGV.length == 1 and ARGV[0] != "version" or ARGV[0] != "help" or ARGV[0] 
 				labelChecker(sheet1.row(0), testvar)
 				fieldChecker(sheet1.row(0))
 				processData(sheet1, newvar, testvar)
-				printFile(newvar, testvar, newSheet, newBook, output)
+				printFile(newvar, testvar, newSheet, newBook, output, il_or_cc)
 			end
 		else
 			print "\n\n
@@ -238,7 +253,7 @@ elsif ARGV.length == 1 and ARGV[0] != "version" or ARGV[0] != "help" or ARGV[0] 
 			labelChecker(file_data[0], testvar)
 			fieldChecker(file_data[0])
 			processData(file_data, newvar, testvar)
-			printFile(newvar, testvar, newSheet, newBook, output)
+			printFile(newvar, testvar, newSheet, newBook, output, il_or_cc)
 		else
 			print "\n\n
 			WHOOPS!!!
@@ -275,7 +290,7 @@ elsif ARGV.length == 1 and ARGV[0] != "version" or ARGV[0] != "help" or ARGV[0] 
 				labelChecker(header, testvar)
 				fieldChecker(header)
 				processData(xlsxSheet, newvar, testvar)
-				printFile(newvar, testvar, newSheet, newBook, output)
+				printFile(newvar, testvar, newSheet, newBook, output, il_or_cc)
 			end
 		end
 	else
