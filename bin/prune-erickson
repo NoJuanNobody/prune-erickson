@@ -204,7 +204,7 @@ elsif ARGV.length == 1 and ARGV[0] != "version" or ARGV[0] != "help" or ARGV[0] 
 			It looks like this file is in the wrong folder or does not exsist. 
 			try locating the folder and inputing the correct path\n\n".red
 		end	
-	elsif ARGV[0] =~ /\S+[.csv*]/ and ARGV[1] =~ /\S+.xls\b/
+	elsif ARGV[0] =~ /\S+[.csv*]/ and ARGV[1] =~ /\S+.xls\bprune/
 		output = ARGV[1]
 		if File.exist?(fileName)
 			file_data = CSV.read(fileName)
