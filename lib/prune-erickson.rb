@@ -163,7 +163,9 @@ def com_separated_files (output)
 	rowlength = original_sheet.row(0)
 	puts rowlength.length
 	# make a directory for the new files
-	# %x(mkdir com_separated_files)
+	unless File.directory?("com_separated_files")
+		%x(mkdir com_separated_files)
+	end
 	original_sheet.each do |row|
 		if row[0] == "apl".upcase
 			
@@ -422,6 +424,9 @@ if res == 'y' || res == 'Y'
 else
 	il_or_cc = "IL"
 end
+print "Do you wish to create separate files based on community names?[y/n]".yellow
+comres= STDIN.gets.strip
+
 # --------------------------------------------
 # ASKING FOR HELP
 if ARGV.length == 1 and ARGV[0] == "help"
@@ -499,7 +504,9 @@ elsif ARGV.length == 1 and ARGV[0] != "version" or ARGV[0] != "help" or ARGV[0] 
 				fieldChecker(sheet1.row(0))
 				processData(sheet1, newvar, testvar)
 				printFile(newvar, testvar, output, il_or_cc)
-				com_separated_files(output)
+				if comres == 'y' || comres == 'Y'
+					com_separated_files(output)
+				end
 			end
 		else
 			print "\n\n
@@ -526,7 +533,9 @@ elsif ARGV.length == 1 and ARGV[0] != "version" or ARGV[0] != "help" or ARGV[0] 
 			fieldChecker(file_data[0])
 			processData(file_data, newvar, testvar)
 			printFile(newvar, testvar, output, il_or_cc)
-			com_separated_files(output)
+			if comres == 'y' || comres == 'Y'
+				com_separated_files(output)
+			end
 		else
 			print "\n\n
 			WHOOPS!!!
@@ -564,7 +573,9 @@ elsif ARGV.length == 1 and ARGV[0] != "version" or ARGV[0] != "help" or ARGV[0] 
 				fieldChecker(header)
 				processData(xlsxSheet, newvar, testvar)
 				printFile(newvar, testvar, output, il_or_cc)
-				com_separated_files(output)
+				if comres == 'y' || comres == 'Y'
+					com_separated_files(output)
+				end
 			end
 		end
 	else
