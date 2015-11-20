@@ -107,20 +107,26 @@ def processData (sheet, newvar, testvar)
 	}
 end
 
-def printFile (newvar, testvar, newSheet, newBook, output, il_or_cc)
+def printFile (newvar, testvar, output, il_or_cc, k=0, l=1,offset=0)
 	# print newvar
-	puts il_or_cc
-	for i in 0..newvar.length
-		for j in 1..testvar.length
-				
-		
-				newSheet.row(i).push newvar[(i*testvar.length)+j]
+	newBook = Spreadsheet::Workbook.new
+	newSheet = newBook.create_worksheet
+	if il_or_cc == ""
+		testvar.each do |x|
+			newSheet.row(0).push x
 		end
-		if i > 0
-			newSheet.row(i).push "#{il_or_cc}"
+	end
+	for i in k..newvar.length
+		for j in l..testvar.length-1
+				newSheet.row(i+offset).push newvar[(i*testvar.length)+j]
+		end
+		if il_or_cc != ""
+			if i > 0
+				newSheet.row(i).push "#{il_or_cc}"
 
-		else
-			newSheet.row(i).push "ILorCC"
+			else
+				newSheet.row(i).push "ILorCC"
+			end
 		end
 	end
 	print "output file is in same file under out.xls to open, use \n \n open #{output}"
@@ -128,26 +134,291 @@ def printFile (newvar, testvar, newSheet, newBook, output, il_or_cc)
 	newBook.write output
 end
 
+def com_separated_files (output)
+	puts output
+	labels = Array.new
+	apl_array = Array.new
+	ach_array = Array.new
+	bbv_array = Array.new
+	ccv_array = Array.new
+	cci_array = Array.new
+	dvf_array = Array.new
+	eth_array = Array.new
+	frv_array = Array.new
+	gsv_array = Array.new
+	hsd_array = Array.new
+	lhn_array = Array.new
+	lph_array = Array.new
+	mgc_array = Array.new
+	ocv_array = Array.new
+	rwv_array = Array.new
+	sbv_array = Array.new
+	tck_array = Array.new
+	wcd_array = Array.new
+	
+	original = Spreadsheet.open(output)
+	original_sheet = original.worksheet(0)
+	
+	
+	rowlength = original_sheet.row(0)
+	puts rowlength.length
+	# make a directory for the new files
+	# %x(mkdir com_separated_files)
+	original_sheet.each do |row|
+		if row[0] == "apl".upcase
+			
+			# print row to other array and print label to a community array
+			row.each do |x|
+				apl_array.push x
+			end
+			unless labels.include?("apl".upcase)
+				labels.push "apl".upcase
+			end
+		end
+		if row[0] == "ach".upcase
+			
+			# print row to other array and print label to a community array
+			row.each do |x|
+				ach_array.push x
+			end
+			unless labels.include?("ach".upcase)
+				labels.push "ach".upcase
+			end
+		end
+		if row[0] == "bbv".upcase
+			
+			# print row to other array and print label to a community array
+			row.each do |x|
+				bbv_array.push x
+			end
+			unless labels.include?("bbv".upcase)
+				labels.push "bbv".upcase
+			end
+		end
+		if row[0] == "ccv".upcase
+			
+			# print row to other array and print label to a community array
+			row.each do |x|
+				ccv_array.push x
+			end
+			unless labels.include?("ccv".upcase)
+				labels.push "ccv".upcase
+			end
+		end
+		if row[0] == "cci".upcase
+			
+			# print row to other array and print label to a community array
+			row.each do |x|
+				cci_array.push x
+			end
+			unless labels.include?("cci".upcase)
+				labels.push "cci".upcase
+			end
+		end
+		if row[0] == "dvf".upcase
+			
+			# print row to other array and print label to a community array
+			row.each do |x|
+				dvf_array.push x
+			end
+			unless labels.include?("dvf".upcase)
+				labels.push "dvf".upcase
+			end
+		end
+		if row[0] == "eth".upcase
+			
+			# print row to other array and print label to a community array
+			row.each do |x|
+				eth_array.push x
+			end
+			unless labels.include?("eth".upcase)
+				labels.push "eth".upcase
+			end
+		end
+		if row[0] == "frv".upcase
+			
+			# print row to other array and print label to a community array
+			row.each do |x|
+				frv_array.push x
+			end
+			unless labels.include?("frv".upcase)
+				labels.push "frv".upcase
+			end
+		end
+		if row[0] == "gsv".upcase
+			
+			# print row to other array and print label to a community array
+			row.each do |x|
+				gsv_array.push x
+			end
+			unless labels.include?("gsv".upcase)
+				labels.push "gsv".upcase
+			end
+		end
+		if row[0] == "hsd".upcase
+			
+			# print row to other array and print label to a community array
+			row.each do |x|
+				hsd_array.push x
+			end
+			unless labels.include?("hsd".upcase)
+				labels.push "hsd".upcase
+			end
+		end
+		if row[0] == "lhn".upcase
+			
+			# print row to other array and print label to a community array
+			row.each do |x|
+				lhn_array.push x
+			end
+			unless labels.include?("lhn".upcase)
+				labels.push "lhn".upcase
+			end
+		end
+		if row[0] == "lph".upcase
+			
+			# print row to other array and print label to a community array
+			row.each do |x|
+				lph_array.push x
+			end
+			unless labels.include?("lph".upcase)
+				labels.push "lph".upcase
+			end
+		end
+		if row[0] == "mgc".upcase
+			
+			# print row to other array and print label to a community array
+			row.each do |x|
+				mgc_array.push x
+			end
+			unless labels.include?("mgc".upcase)
+				labels.push "mgc".upcase
+			end
+		end
+		if row[0] == "ocv".upcase
+			
+			# print row to other array and print label to a community array
+			row.each do |x|
+				ocv_array.push x
+			end
+			unless labels.include?("ocv".upcase)
+				labels.push "ocv".upcase
+			end
+		end
+		if row[0] == "rwv".upcase
+			
+			# print row to other array and print label to a community array
+			row.each do |x|
+				rwv_array.push x
+			end
+			unless labels.include?("rwv".upcase)
+				labels.push "rwv".upcase
+			end
+		end
+		if row[0] == "sbv".upcase
+			
+			# print row to other array and print label to a community array
+			row.each do |x|
+				sbv_array.push x
+			end
+			unless labels.include?("sbv".upcase)
+				labels.push "sbv".upcase
+			end
+		end
+		if row[0] == "tck".upcase
+			
+			# print row to other array and print label to a community array
+			row.each do |x|
+				tck_array.push x
+			end
+			unless labels.include?("tck".upcase)
+				labels.push "tck".upcase
+			end
+		end
+		if row[0] == "wcd".upcase
+			
+			# print row to other array and print label to a community array
+			row.each do |x|
+				wcd_array.push x
+			end
+			unless labels.include?("wcd".upcase)
+				labels.push "wcd".upcase
+			end
+		end
+	end
+	print "creating files for these communities:\n".blue
+	puts "#{labels}".blue
+	print rowlength
+	if apl_array.length > 0
+		printFile(apl_array, rowlength, "com_separated_files/apl.xls", "", 0, 0,1)
+	end
+	if ach_array.length > 0
+		printFile(ach_array, rowlength, "com_separated_files/ach.xls", "", 0, 0,1)
+	end
+	if bbv_array.length > 0
+		printFile(bbv_array, rowlength, "com_separated_files/bbv.xls", "", 0, 0,1)
+	end
+	if ccv_array.length > 0
+		printFile(ccv_array, rowlength, "com_separated_files/ccv.xls", "", 0, 0,1)
+	end
+	if cci_array.length > 0
+		printFile(cci_array, rowlength, "com_separated_files/cci.xls", "", 0, 0,1)
+	end
+	if dvf_array.length > 0
+		printFile(dvf_array, rowlength, "com_separated_files/dvf.xls", "", 0, 0,1)
+	end
+	if eth_array.length > 0
+		printFile(eth_array, rowlength, "com_separated_files/eth.xls", "", 0, 0,1)
+	end
+	if frv_array.length > 0
+		printFile(frv_array, rowlength, "com_separated_files/frv.xls", "", 0, 0,1)
+	end
+	if gsv_array.length > 0
+		printFile(gsv_array, rowlength, "com_separated_files/gsv.xls", "", 0, 0,1)
+	end
+	if hsd_array.length > 0
+		printFile(hsd_array, rowlength, "com_separated_files/hsd.xls", "", 0, 0,1)
+	end
+	if lhn_array.length > 0
+		printFile(lhn_array, rowlength, "com_separated_files/lhn.xls", "", 0, 0,1)
+	end
+	if lph_array.length > 0
+		printFile(lph_array, rowlength, "com_separated_files/lph.xls", "", 0, 0,1)
+	end
+	if mgc_array.length > 0
+		printFile(mgc_array, rowlength, "com_separated_files/mgc.xls", "", 0, 0,1)
+	end
+	if ocv_array.length > 0
+		printFile(ocv_array, rowlength, "com_separated_files/ocv.xls", "", 0, 0,1)
+	end
+	if rwv_array.length > 0
+		printFile(rwv_array, rowlength, "com_separated_files/rwv.xls", "", 0, 0,1)
+	end
+	if sbv_array.length > 0
+		printFile(sbv_array, rowlength, "com_separated_files/sbv.xls", "", 0, 0,1)
+	end
+	if tck_array.length > 0
+		printFile(tck_array, rowlength, "com_separated_files/tck.xls", "", 0, 0,1)
+	end
+	if wcd_array.length > 0
+		printFile(wcd_array, rowlength, "com_separated_files/wcd.xls", "", 0, 0,1)
+	end
+
+
+end
+
 # --------------------------------------------
 # GRABS INFORMATION FROM COMMAND LINE AND MAKES DATA AVAILABLE FOR PROGRAM
 fileName = ARGV[0]
 sheetNum = ARGV[1].to_i-1
 output = ARGV[2]
-if sheetNum > 0	
-	print fileName
-	print "\n"
-
-	print sheetNum
-end	
 print "\n\n"
-puts "Is this an email campaign for Continuing Care? (CC) [y/n]".yellow
+print "Is this an email campaign for Continuing Care? (CC) [y/n]".yellow
 
 res = STDIN.gets.strip
-puts res
-
-if res == 'y'
+print "\n\n"
+if res == 'y' || res == 'Y'
 	il_or_cc = 'CC'
-	puts il_or_cc
 else
 	il_or_cc = "IL"
 end
@@ -227,7 +498,8 @@ elsif ARGV.length == 1 and ARGV[0] != "version" or ARGV[0] != "help" or ARGV[0] 
 				labelChecker(sheet1.row(0), testvar)
 				fieldChecker(sheet1.row(0))
 				processData(sheet1, newvar, testvar)
-				printFile(newvar, testvar, newSheet, newBook, output, il_or_cc)
+				printFile(newvar, testvar, output, il_or_cc)
+				com_separated_files(output)
 			end
 		else
 			print "\n\n
@@ -253,7 +525,8 @@ elsif ARGV.length == 1 and ARGV[0] != "version" or ARGV[0] != "help" or ARGV[0] 
 			labelChecker(file_data[0], testvar)
 			fieldChecker(file_data[0])
 			processData(file_data, newvar, testvar)
-			printFile(newvar, testvar, newSheet, newBook, output, il_or_cc)
+			printFile(newvar, testvar, output, il_or_cc)
+			com_separated_files(output)
 		else
 			print "\n\n
 			WHOOPS!!!
@@ -290,7 +563,8 @@ elsif ARGV.length == 1 and ARGV[0] != "version" or ARGV[0] != "help" or ARGV[0] 
 				labelChecker(header, testvar)
 				fieldChecker(header)
 				processData(xlsxSheet, newvar, testvar)
-				printFile(newvar, testvar, newSheet, newBook, output, il_or_cc)
+				printFile(newvar, testvar, output, il_or_cc)
+				com_separated_files(output)
 			end
 		end
 	else
