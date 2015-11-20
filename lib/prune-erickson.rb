@@ -51,13 +51,13 @@ def fieldChecker (row)
 	unless row.include? "Address"	
 		print "you are missing the Address field\n".yellow.blink
 	end
-	unless sheet1.row(0).include? "Email"	
+	unless row.include? "Email"	
 		print "you are missing the Email field\n".yellow.blink
 	end
 end
 
 def processData (sheet, newvar, testvar)
-	newvar = Array.new
+	
 	newvar.push "zero"
 	sheet.each do |row|
 		row.each_with_index {|val, index| 
@@ -104,7 +104,7 @@ def processData (sheet, newvar, testvar)
 	}
 end
 
-def printFile (newvar, testvar, newSheet)
+def printFile (newvar, testvar, newSheet, newBook, output)
 	# print newvar
 	for i in 0..newvar.length
 		for j in 1..testvar.length
@@ -200,7 +200,7 @@ elsif ARGV.length == 1 and ARGV[0] != "version" or ARGV[0] != "help" or ARGV[0] 
 			newSheet.name = "output"
 
 			testvar = Array.new
-		
+			newvar = Array.new
 			print "~>looking for unnecessary information"
 			print "\n"
 			if sheet1 == nil
@@ -212,7 +212,7 @@ elsif ARGV.length == 1 and ARGV[0] != "version" or ARGV[0] != "help" or ARGV[0] 
 				labelChecker(sheet1.row(0), testvar)
 				fieldChecker(sheet1.row(0))
 				processData(sheet1, newvar, testvar)
-				printFile(newvar, testvar, newSheet)
+				printFile(newvar, testvar, newSheet, newBook, output)
 			end
 		else
 			print "\n\n
@@ -221,7 +221,7 @@ elsif ARGV.length == 1 and ARGV[0] != "version" or ARGV[0] != "help" or ARGV[0] 
 			It looks like this file is in the wrong folder or does not exsist. 
 			try locating the folder and inputing the correct path\n\n".red
 		end	
-	elsif ARGV[0] =~ /\S+[.csv*]/ and ARGV[1] =~ /\S+.xls\bprune/
+	elsif ARGV[0] =~ /\S+[.csv*]/ and ARGV[1] =~ /\S+.xls\b/
 		output = ARGV[1]
 		if File.exist?(fileName)
 			file_data = CSV.read(fileName)
@@ -231,14 +231,14 @@ elsif ARGV.length == 1 and ARGV[0] != "version" or ARGV[0] != "help" or ARGV[0] 
 			newSheet.name = "output"
 
 			testvar = Array.new
-		
+			newvar = Array.new
 			print "~>looking for unnecessary information"
 			print "\n"
 
 			labelChecker(file_data[0], testvar)
 			fieldChecker(file_data[0])
 			processData(file_data, newvar, testvar)
-			printFile(newvar, testvar, newSheet)
+			printFile(newvar, testvar, newSheet, newBook, output)
 		else
 			print "\n\n
 			WHOOPS!!!
@@ -270,11 +270,12 @@ elsif ARGV.length == 1 and ARGV[0] != "version" or ARGV[0] != "help" or ARGV[0] 
 				header = xlsx.sheet(sheetNum).row(1)
 				# take first row, and loop through the items in the array
 				# sort indexes that are not necessary in the array
-				testvar = Array.new				
+				testvar = Array.new
+				newvar = Array.new				
 				labelChecker(header, testvar)
 				fieldChecker(header)
 				processData(xlsxSheet, newvar, testvar)
-				printFile(newvar, testvar, newSheet)
+				printFile(newvar, testvar, newSheet, newBook, output)
 			end
 		end
 	else
