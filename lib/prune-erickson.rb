@@ -6,6 +6,123 @@ require 'colorize'
 # require 'fileUtils'
 
 
+# ------------------
+# FUNCTIONS
+# ------------------
+def labelChecker (row, testvar)
+
+	row.each_with_index{|val, index| 
+
+		unless val != "OppCommunity" and val !="FirstName" and val != "LastName" and val != "Address" and val!="City" and val != "State" and val != "Zipcode" and val != "Phone" and val != "Email" and val != "ILorCC"
+			testvar.push(index)
+		end
+	}
+end
+
+def fieldChecker (row)
+	unless row.include? "OppCommunity"	
+		print "you are missing the OppCommunity field\n".yellow.blink
+	else
+	end
+	unless row.include? "FirstName"	
+		print "you are missing the FirstName field\n".yellow.blink
+	end
+	unless row.include? "LastName"	
+		print "you are missing the LastName field\n".yellow.blink
+	end
+	unless row.include? "Phone"	
+		print "you are missing the phone field\n".yellow.blink
+	end
+	unless row.include? "Address"	
+		print "you are missing the Address field\n".yellow.blink
+	end
+	unless row.include? "City"	
+		print "you are missing the City field\n".yellow.blink
+	end
+	unless row.include? "State"	
+		print "you are missing the State field\n".yellow.blink
+	end
+	unless row.include? "Zipcode"	
+		print "you are missing the Zipcode field\n".yellow.blink
+	end
+	unless row.include? "Address"	
+		print "you are missing the Address field\n".yellow.blink
+	end
+	unless row.include? "Address"	
+		print "you are missing the Address field\n".yellow.blink
+	end
+	unless sheet1.row(0).include? "Email"	
+		print "you are missing the Email field\n".yellow.blink
+	end
+end
+
+def processData (sheet, newvar, testvar)
+	newvar = Array.new
+	newvar.push "zero"
+	sheet.each do |row|
+		row.each_with_index {|val, index| 
+			if testvar.include? index
+				
+				newvar.push val
+			end
+		}
+	end
+	print "~~>writing new file \n\n"
+	
+	newvar.map! { |x| 
+
+		if x == "OppCommunity"
+			print "renaming field #{x} \n".colorize(:light_blue)
+			x = "Community of Interest"
+		elsif x == "FirstName"
+			print "renaming field #{x} \n".colorize(:light_blue)
+			x = "First Name"	
+		elsif x == "LastName"
+			print "renaming field #{x} \n".colorize(:light_blue)
+			x = "Last Name"
+		elsif x == "Address"
+			print "renaming field #{x} \n".colorize(:light_blue)
+			x = "Address 1"
+		elsif x == "city"
+			print "renaming field #{x} \n".colorize(:light_blue)
+			x = "city"
+		elsif x == "State"
+			print "renaming field #{x} \n".colorize(:light_blue)
+			x = "State or Province"
+		elsif x == "Zipcode"
+			print "renaming field #{x} \n".colorize(:light_blue)
+			x = "Zip or Postal Code"
+		elsif x == "Email"
+			print "renaming field #{x} \n".colorize(:light_blue)
+			x = "Email Address"
+		elsif x == "Phone"
+			print "renaming field #{x} \n".colorize(:light_blue)
+			x = "Home Phone"
+		else
+			x=x
+		end
+	}
+end
+
+def printFile (newvar, testvar, newSheet)
+	# print newvar
+	for i in 0..newvar.length
+		for j in 1..testvar.length
+				
+		
+				newSheet.row(i).push newvar[(i*testvar.length)+j]
+		end
+		if i > 0
+			newSheet.row(i).push "IL"
+		else
+			newSheet.row(i).push "ILorCC"
+		end
+	end
+	print "output file is in same file under out.xls to open, use \n \n open #{output}"
+	print "\n"
+	newBook.write output
+end
+
 # --------------------------------------------
 # GRABS INFORMATION FROM COMMAND LINE AND MAKES DATA AVAILABLE FOR PROGRAM
 fileName = ARGV[0]
@@ -167,120 +284,4 @@ elsif ARGV.length == 1 and ARGV[0] != "version" or ARGV[0] != "help" or ARGV[0] 
 		prune-erickson help \n\n\n
 		"
 	end
-end
-# ------------------
-# FUNCTIONS
-# ------------------
-def labelChecker (row, testvar)
-
-	row.each_with_index{|val, index| 
-
-		unless val != "OppCommunity" and val !="FirstName" and val != "LastName" and val != "Address" and val!="City" and val != "State" and val != "Zipcode" and val != "Phone" and val != "Email" and val != "ILorCC"
-			testvar.push(index)
-		end
-	}
-end
-
-def fieldChecker (row)
-	unless row.include? "OppCommunity"	
-		print "you are missing the OppCommunity field\n".yellow.blink
-	else
-	end
-	unless row.include? "FirstName"	
-		print "you are missing the FirstName field\n".yellow.blink
-	end
-	unless row.include? "LastName"	
-		print "you are missing the LastName field\n".yellow.blink
-	end
-	unless row.include? "Phone"	
-		print "you are missing the phone field\n".yellow.blink
-	end
-	unless row.include? "Address"	
-		print "you are missing the Address field\n".yellow.blink
-	end
-	unless row.include? "City"	
-		print "you are missing the City field\n".yellow.blink
-	end
-	unless row.include? "State"	
-		print "you are missing the State field\n".yellow.blink
-	end
-	unless row.include? "Zipcode"	
-		print "you are missing the Zipcode field\n".yellow.blink
-	end
-	unless row.include? "Address"	
-		print "you are missing the Address field\n".yellow.blink
-	end
-	unless row.include? "Address"	
-		print "you are missing the Address field\n".yellow.blink
-	end
-	unless sheet1.row(0).include? "Email"	
-		print "you are missing the Email field\n".yellow.blink
-	end
-end
-
-def processData (sheet, newvar, testvar)
-	newvar = Array.new
-	newvar.push "zero"
-	sheet.each do |row|
-		row.each_with_index {|val, index| 
-			if testvar.include? index
-				
-				newvar.push val
-			end
-		}
-	end
-	print "~~>writing new file \n\n"
-	
-	newvar.map! { |x| 
-
-		if x == "OppCommunity"
-			print "renaming field #{x} \n".colorize(:light_blue)
-			x = "Community of Interest"
-		elsif x == "FirstName"
-			print "renaming field #{x} \n".colorize(:light_blue)
-			x = "First Name"	
-		elsif x == "LastName"
-			print "renaming field #{x} \n".colorize(:light_blue)
-			x = "Last Name"
-		elsif x == "Address"
-			print "renaming field #{x} \n".colorize(:light_blue)
-			x = "Address 1"
-		elsif x == "city"
-			print "renaming field #{x} \n".colorize(:light_blue)
-			x = "city"
-		elsif x == "State"
-			print "renaming field #{x} \n".colorize(:light_blue)
-			x = "State or Province"
-		elsif x == "Zipcode"
-			print "renaming field #{x} \n".colorize(:light_blue)
-			x = "Zip or Postal Code"
-		elsif x == "Email"
-			print "renaming field #{x} \n".colorize(:light_blue)
-			x = "Email Address"
-		elsif x == "Phone"
-			print "renaming field #{x} \n".colorize(:light_blue)
-			x = "Home Phone"
-		else
-			x=x
-		end
-	}
-end
-
-def printFile (newvar, testvar, newSheet)
-	# print newvar
-	for i in 0..newvar.length
-		for j in 1..testvar.length
-				
-		
-				newSheet.row(i).push newvar[(i*testvar.length)+j]
-		end
-		if i > 0
-			newSheet.row(i).push "IL"
-		else
-			newSheet.row(i).push "ILorCC"
-		end
-	end
-	print "output file is in same file under out.xls to open, use \n \n open #{output}"
-	print "\n"
-	newBook.write output
 end
