@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'prune-erickson'
-  s.version     = '0.2.1'
+  s.version     = '0.3.0'
   s.date        = '2015-09-28'
   s.summary     = "prune-erickson"
   s.description = "An excel processing script to remove erroneous data"
