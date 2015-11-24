@@ -25,12 +25,12 @@ the general pattern of using this utility is to call the name of the utility and
 
 ```$prune-erickson [args]```
 
-###helpful commands###
+###Helpful Commands###
 
-```help```
+```prune-erickson [help]```
 will give you a friendly reminder of how to process excel spreadsheets
 
-```-v, -version, or version```
+```prune-erickson [-v, -version, or version]```
 will give you the version of the utility
 
 ```$prune-erickson input-file.xls 1 output.xls```
