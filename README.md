@@ -45,6 +45,11 @@ the format of the processing command is a little different
 
 because a CSV file does not have separate worksheets, there is no need to provide a sheet number
 
+###IL or CC option ###
+you now have the option to specify if your data is for IL or CC! just answer the question when prompeted and prune-erickson will auto-populate a field with IL or CC
+
+### handling multiple community codes###
+IF you have one data list, but multiple emails, you can now split your data list based on the community code field. passing the yes option when asked if you would like to separate the data by community will create a directory and fill it with your separate files, and all of them will be perfectly formated. 
 ### Who do I talk to? ###
 
 * adlondono owns this repo and wrote this program
